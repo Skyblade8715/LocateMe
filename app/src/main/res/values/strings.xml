@@ -1,3 +1,24 @@
 <resources>
     <string name="app_name">LocateMe</string>
+    <string name="title_activity_welcome_screen">WelcomeScreen</string>
+    <string name="common_continue">Continue</string>
+    <string name="grant_permission">Grant permission</string>
+    <string name="welcome_to_locateme">Welcome to LocateMe!</string>
+    <string name="permission_sms">SMS permissions</string>
+    <string name="permission_gps">GPS permissions</string>
+    <string name="welcome_explanation">Hi! This app is designed to allow family and friends to find
+        each other\'s location on demand. It does not track you constantly nor does it store or
+        share any of your data with any 3rd party.
+        \nYou need to explicitly allow a phone number to be able to request location data from
+        LocateMe installed on your phone or you need to send it to someone.</string>
+    <string name="sms_explanation">LocateMe requires SMS access permissions to enable the
+        functionality of sending and receiving messages. With them - LocateMe can send SMS messages
+        to your friends and family to let them know your location as well as receive messages from
+        them. It\'s vital for the app to function!</string>
+    <string name="gps_explanation">Location permissions are necessary for LocateMe to retrieve the
+        device\'s geographic coordinates. When you grant location permissions, the app gain
+        privilege to request the precise location of the device, which is essential for providing
+        accurate location updates to your family and friends.</string>
+    <string name="help_welcome_screen">Here is the list of contacts you wish to use LocateMe with. Once you add any via button at the bottom of the screen, you can tap on a contact which will show you all the available options. From right to left, those are: \n- Remove contact, \n- Disallow given contact from being able to check your location, \n- Request contact\'s location(Note: given contact must have you added and allow you to do so,\n- Send your location to contact(That doesn\'t require another person to even use LocateMe :)).</string>
+    <string name="press_to_see_help">Stay safe!\nIf you need any further explanations on how the app works:\nPress here to see help! :)</string>
 </resources>
