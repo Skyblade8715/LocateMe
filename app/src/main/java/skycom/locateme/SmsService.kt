@@ -10,6 +10,9 @@ import android.os.IBinder
 import android.provider.Telephony
 import android.telephony.SmsMessage
 import android.util.Log
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import skycom.locateme.database.GeoData
 import skycom.locateme.database.RoomDbProvider
 
@@ -50,15 +53,19 @@ class SmsService : Service() {
                             val phoneNumber = smsMessage.originatingAddress
                             Log.e("SMS", "Nr: $phoneNumber\nmsg: $messageBody")
 
-                            if ((phoneNumber?.let {
-                                    RoomDbProvider.getDatabase(context)
-                                        .phoneNumberDao().isPhoneNumberEnabled(it)
-                                } == true)) {
-                                if (messageBody.contains("LocateMe!")) {
-                                    requestedLocation(phoneNumber)
-                                }
-                                else if (messageBody.contains("LocateMe\n")) {
-                                    receivedLocation(messageBody)
+                            if(phoneNumber != null) {
+                                CoroutineScope(Dispatchers.IO).launch {
+                                    if (RoomDbProvider.getDatabase(context).phoneNumberDao()
+                                            .isPhoneNumberEnabled(
+                                                phoneNumber.toString()
+                                            )
+                                    ) {
+                                        if (messageBody.contains("LocateMe!")) {
+                                            requestedLocation(phoneNumber)
+                                        } else if (messageBody.contains("LocateMe\n")) {
+                                            receivedLocation(messageBody)
+                                        }
+                                    }
                                 }
                             }
                         }

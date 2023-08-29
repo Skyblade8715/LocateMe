@@ -2,7 +2,6 @@ package skycom.locateme
 
 import android.app.Activity
 import android.content.Context
-import android.content.ContextWrapper
 import android.content.Intent
 import android.os.Bundle
 import android.provider.ContactsContract.CommonDataKinds.Phone
@@ -187,7 +186,8 @@ class MainActivity : ComponentActivity() {
                             contentPadding = PaddingValues(horizontal = 10.dp)
                         ) {
                             Text(
-                                text = "Disable"
+                                text = "Disable",
+                                color = MaterialTheme.colorScheme.background
                             )
                             Icon(
                                 painter = painterResource(id = R.drawable.location_enabled),
@@ -201,7 +201,10 @@ class MainActivity : ComponentActivity() {
                                 ctx) },
                             contentPadding = PaddingValues(horizontal = 10.dp)
                         ) {
-                            Text(text = "Request")
+                            Text(
+                                text = "Request",
+                                color = MaterialTheme.colorScheme.background
+                            )
                             Icon(
                                 painter = painterResource(id = R.drawable.request_location),
                                 contentDescription = "",
@@ -216,7 +219,10 @@ class MainActivity : ComponentActivity() {
                             colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.onSecondaryContainer),
                             contentPadding = PaddingValues(horizontal = 10.dp)
                         ) {
-                            Text(text = "Send")
+                            Text(
+                                text = "Send",
+                                color = MaterialTheme.colorScheme.background
+                            )
                             Icon(
                                 painter = painterResource(id = R.drawable.quick_location_send),
                                 contentDescription = null,
@@ -333,6 +339,7 @@ class MainActivity : ComponentActivity() {
             )
         }
     }
+
     @Composable
     fun MainScreen() {
         val ctx = LocalContext.current

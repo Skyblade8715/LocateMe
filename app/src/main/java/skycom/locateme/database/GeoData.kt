@@ -36,6 +36,10 @@ class GeoData(
             if (ActivityCompat.checkSelfPermission(
                     ctx, Manifest.permission.ACCESS_FINE_LOCATION
                 )
+                == PackageManager.PERMISSION_GRANTED ||
+                ActivityCompat.checkSelfPermission(
+                    ctx, Manifest.permission.ACCESS_COARSE_LOCATION
+                )
                 == PackageManager.PERMISSION_GRANTED
             ) {
 
@@ -73,6 +77,12 @@ class GeoData(
                         SmsHandler.sendSMS(number, locationData.createMessageWithLocation(), ctx)
                     }
                 }
+            } else {
+                Toast.makeText(
+                    ctx,
+                    "You didn't give permissions",
+                    Toast.LENGTH_LONG
+                ).show()
             }
         }
     }
