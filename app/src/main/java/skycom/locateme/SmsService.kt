@@ -99,7 +99,6 @@ class SmsService : Service() {
         val openMaps = Intent(Intent.ACTION_VIEW, Uri.parse(geoUri))
         openMaps.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         baseContext.startActivity(openMaps)
-        // Implement the action you want to perform when the specific string is found in an SMS
     }
 
     private fun requestedLocation(phoneNumber: String) {

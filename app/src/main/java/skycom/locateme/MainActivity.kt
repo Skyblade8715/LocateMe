@@ -64,7 +64,7 @@ private const val REQUEST_CONTACT = 12
 private const val PERMISSION_REQUEST_SEND_SMS = 123
 
 class MainActivity : ComponentActivity() {
-    lateinit var db : RoomDb
+    lateinit var db: RoomDb
     private val phoneNumberViewModel: PhoneNumberViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,22 +80,8 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-//    @Preview(
-//        uiMode = Configuration.UI_MODE_NIGHT_YES,
-//        showBackground = true,
-//        name = "Dark Mode"
-//    )
-//    @Composable
-//    fun PreviewContactTile() {
-//        LocateMeTheme {
-//            Surface() {
-//                ContactTile(PhoneNumber("+48531234203", "Adam Badam", true))
-//            }
-//        }
-//    }
-
     @Composable
-    fun ContactTile(phoneNumber: PhoneNumber, ctx: Context){
+    fun ContactTile(phoneNumber: PhoneNumber, ctx: Context) {
         var isExpanded by remember {
             mutableStateOf(true)
         }
@@ -155,82 +141,89 @@ class MainActivity : ComponentActivity() {
                     )
                 }
                 Row(
-                        modifier = Modifier
-                            .height(60.dp)
-                            .fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween
+                    modifier = Modifier
+                        .height(60.dp)
+                        .fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Button(
+                        onClick = {
+                            phoneNumberViewModel.deleteNumber(phoneNumber)
+                        },
+                        Modifier
+                            .padding(start = 16.dp)
+                            .width(40.dp),
+                        colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.tertiary),
+                        contentPadding = PaddingValues(horizontal = 0.dp, vertical = 4.dp)
                     ) {
-                        Button(
-                            onClick = {
-                                phoneNumberViewModel.deleteNumber(phoneNumber)
-                            },
-                            Modifier
-                                .padding(start = 16.dp)
-                                .width(40.dp),
-                            colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.tertiary),
-                            contentPadding = PaddingValues(horizontal = 0.dp, vertical = 4.dp)
-                        ) {
-                            Icon(painter = painterResource(
-                                id = R.drawable.remove_contact),
-                                contentDescription = "",
-                                Modifier.size(28.dp)
+                        Icon(
+                            painter = painterResource(
+                                id = R.drawable.remove_contact
+                            ),
+                            contentDescription = "",
+                            Modifier.size(28.dp)
+                        )
+                    }
+                    Button(
+                        onClick = {
+                            val updatedPhoneNumber =
+                                phoneNumber.copy(isSharingData = !phoneNumber.isSharingData)
+                            phoneNumberViewModel.updateNumber(updatedPhoneNumber)
+                        },
+                        colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.error),
+                        contentPadding = PaddingValues(horizontal = 10.dp)
+                    ) {
+                        Text(
+                            text = "Disable",
+                            color = MaterialTheme.colorScheme.background
+                        )
+                        Icon(
+                            painter = painterResource(id = R.drawable.location_enabled),
+                            contentDescription = "",
+                            Modifier.size(ButtonDefaults.IconSize)
+                        )
+                    }
+                    Button(
+                        onClick = {
+                            SmsHandler.sendSMS(
+                                phoneNumber.number,
+                                "LocateMe!\nYour location has been requested by this number!\n",
+                                ctx
                             )
-                        }
-                        Button(
-                            onClick = {
-                                val updatedPhoneNumber = phoneNumber.copy(isSharingData = !phoneNumber.isSharingData)
-                                phoneNumberViewModel.updateNumber(updatedPhoneNumber)
-                            },
-                            colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.error),
-                            contentPadding = PaddingValues(horizontal = 10.dp)
-                        ) {
-                            Text(
-                                text = "Disable",
-                                color = MaterialTheme.colorScheme.background
-                            )
-                            Icon(
-                                painter = painterResource(id = R.drawable.location_enabled),
-                                contentDescription = "",
-                                Modifier.size(ButtonDefaults.IconSize)
-                            )
-                        }
-                        Button(
-                            onClick = { SmsHandler.sendSMS(phoneNumber.number,
-                            "LocateMe!\nYour location has been requested by this number!\n",
-                                ctx) },
-                            contentPadding = PaddingValues(horizontal = 10.dp)
-                        ) {
-                            Text(
-                                text = "Request",
-                                color = MaterialTheme.colorScheme.background
-                            )
-                            Icon(
-                                painter = painterResource(id = R.drawable.request_location),
-                                contentDescription = "",
-                                Modifier.size(ButtonDefaults.IconSize)
-                            )
-                        }
-                        Button(
-                            onClick = {
-                                GeoData.getAndSendLocation(phoneNumber.number, ctx)
-                            },
-                            Modifier.padding(end = 16.dp),
-                            colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.onSecondaryContainer),
-                            contentPadding = PaddingValues(horizontal = 10.dp)
-                        ) {
-                            Text(
-                                text = "Send",
-                                color = MaterialTheme.colorScheme.background
-                            )
-                            Icon(
-                                painter = painterResource(id = R.drawable.quick_location_send),
-                                contentDescription = null,
-                                Modifier.size(ButtonDefaults.IconSize)
-                            )
-                        }
+                        },
+                        contentPadding = PaddingValues(horizontal = 10.dp)
+                    ) {
+                        Text(
+                            text = "Request",
+                            color = MaterialTheme.colorScheme.background
+                        )
+                        Icon(
+                            painter = painterResource(id = R.drawable.request_location),
+                            contentDescription = "",
+                            Modifier.size(ButtonDefaults.IconSize)
+                        )
+                    }
+                    Button(
+                        onClick = {
+                            GeoData.getAndSendLocation(phoneNumber.number, ctx)
+                        },
+                        Modifier.padding(end = 16.dp),
+                        colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.onSecondaryContainer),
+                        contentPadding = PaddingValues(horizontal = 10.dp)
+                    ) {
+                        Text(
+                            text = "Send",
+                            color = MaterialTheme.colorScheme.background
+                        )
+                        Icon(
+                            painter = painterResource(id = R.drawable.quick_location_send),
+                            contentDescription = null,
+                            Modifier.size(ButtonDefaults.IconSize)
+                        )
                     }
                 }
+            }
         }
     }
 
@@ -249,8 +242,8 @@ class MainActivity : ComponentActivity() {
                     .padding(top = 16.dp, bottom = 16.dp)
                     .fillMaxWidth()
                     .weight(1f)
-            ){
-                items(items = numbers, key = {it.number}) { number ->
+            ) {
+                items(items = numbers, key = { it.number }) { number ->
                     ContactTile(phoneNumber = number, ctx)
                 }
             }
@@ -269,6 +262,7 @@ class MainActivity : ComponentActivity() {
         val intent = Intent(Intent.ACTION_PICK, Phone.CONTENT_URI)
         startActivityForResult(intent, REQUEST_CONTACT)
     }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_CONTACT && resultCode == Activity.RESULT_OK) {
@@ -297,10 +291,10 @@ class MainActivity : ComponentActivity() {
                         phoneNumberViewModel.addNumber(
                             PhoneNumber(phoneNumber, name, true)
                         )
-                        Log.d("ContactPicker", "Selected Contact - Name: $name, Phone Number: $phoneNumber")
-
-                        // Do something with the selected contact's name and phone number
-                        // For example, display it in a TextView
+                        Log.d(
+                            "ContactPicker",
+                            "Selected Contact - Name: $name, Phone Number: $phoneNumber"
+                        )
                     } else {
                         Log.d("ContactPicker", "No data found for the selected contact.")
                     }
@@ -313,7 +307,7 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
-    fun WelcomeAndExplanation(){
+    fun WelcomeAndExplanation() {
         Text(
             text = stringResource(R.string.welcome_to_locateme),
             style = MaterialTheme.typography.titleLarge,
@@ -322,14 +316,14 @@ class MainActivity : ComponentActivity() {
         var isExpanded by remember {
             mutableStateOf(false)
         }
-        val text = if(isExpanded){
+        val text = if (isExpanded) {
             stringResource(R.string.help_welcome_screen)
         } else {
             stringResource(R.string.press_to_see_help)
         }
         Surface(
-            onClick = {isExpanded = !isExpanded},
-        ){
+            onClick = { isExpanded = !isExpanded },
+        ) {
             Text(
                 modifier = Modifier
                     .padding(start = 8.dp, end = 8.dp, top = 16.dp),
@@ -353,18 +347,4 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-//
-//    @Preview(
-//        uiMode = Configuration.UI_MODE_NIGHT_YES,
-//        showBackground = true,
-//        name = "Dark Mode"
-//    )
-//    @Preview(name = "Light Mode")
-//    @Composable
-//    fun PreviewConversation() {
-//        LocateMeTheme {
-//            MainScreen()
-//        }
-//    }
 }
-
